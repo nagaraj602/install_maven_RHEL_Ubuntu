@@ -2,6 +2,9 @@
 
 distro=$(cat /etc/os-release | grep "^ID=" | cut -d "=" -f2 | sed 's/"//g')
 
+echo
+echo
+echo
 echo "Installing Maven on $distro"
 
 if [ "$distro" == "rhel" ]; then
