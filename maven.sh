@@ -33,10 +33,20 @@ sudo rm -rf /opt/apache-maven-* /opt/maven /usr/local/bin/mvn > /dev/null 2>&1
 
 cd /tmp
 
-wget https://dlcdn.apache.org/maven/maven-3/3.9.12/binaries/apache-maven-3.9.12-bin.tar.gz > /dev/null 2>&1
+#Get the updated link of maven from Apache website. If the link is outdated, then you will see installation error
+wget https://dlcdn.apache.org/maven/maven-3/3.9.13/binaries/apache-maven-3.9.13-bin.tar.gz > /dev/null 2>&1
 
-sudo tar xf apache-maven-3.9.12-bin.tar.gz -C /opt
-sudo ln -s /opt/apache-maven-3.9.12 /opt/maven
+if [ $? -ne 0 ]; then
+    echo
+    echo -e "ERROR: Maven download failed due to outdated link! \nPlease update the correct link in your repo. You can find the link from apache website."
+    echo
+    exit 1
+fi
+
+
+
+sudo tar xf apache-maven-3.9.13-bin.tar.gz -C /opt
+sudo ln -s /opt/apache-maven-3.9.13 /opt/maven
 sudo ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
 
 
