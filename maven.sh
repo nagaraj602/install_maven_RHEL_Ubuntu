@@ -63,7 +63,7 @@ source /etc/profile.d/maven.sh
 
 
 echo
-echo "Apache Maven 3.9.12 installed successfully on $distro"
+echo "Apache Maven 3.9.13 installed successfully on $distro"
 echo
 
 
