@@ -10,6 +10,8 @@ echo "Installing Maven on $distro"
 if [ "$distro" == "rhel" ]; then
 
     sudo yum update -y > /dev/null 2>&1
+    sudo yum upgrade -y > /dev/null 2>&1
+    sudo yum install wget -y > /dev/null 2>&1
     sudo dnf install java-25-openjdk-devel -y > /dev/null 2>&1
 
 elif [ "$distro" == "ubuntu" ]; then
