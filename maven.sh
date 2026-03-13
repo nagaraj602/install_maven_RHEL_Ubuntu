@@ -34,7 +34,7 @@ sudo rm -rf /opt/apache-maven-* /opt/maven /usr/local/bin/mvn > /dev/null 2>&1
 cd /tmp
 
 #Get the updated link of maven from Apache website. If the link is outdated, then you will see installation error
-wget https://dlcdn.apache.org/maven/maven-3/3.9.13/binaries/apache-maven-3.9.13-bin.tar.gz > /dev/null 2>&1
+wget https://dlcdn.apache.org/maven/maven-3/3.9.14/binaries/apache-maven-3.9.14-bin.tar.gz > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
     echo
@@ -45,8 +45,8 @@ fi
 
 
 
-sudo tar xf apache-maven-3.9.13-bin.tar.gz -C /opt
-sudo ln -s /opt/apache-maven-3.9.13 /opt/maven
+sudo tar xf apache-maven-3.9.14-bin.tar.gz -C /opt
+sudo ln -s /opt/apache-maven-3.9.14 /opt/maven
 sudo ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
 
 
@@ -63,7 +63,7 @@ source /etc/profile.d/maven.sh
 
 
 echo
-echo "Apache Maven 3.9.13 installed successfully on $distro"
+echo "Apache Maven 3.9.14 installed successfully on $distro"
 echo
 
 
