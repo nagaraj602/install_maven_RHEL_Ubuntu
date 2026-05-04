@@ -36,7 +36,7 @@ sudo rm -rf /opt/apache-maven-* /opt/maven /usr/local/bin/mvn > /dev/null 2>&1
 cd /tmp
 
 #Get the updated link of maven from Apache website. If the link is outdated, then you will see installation error
-https://dlcdn.apache.org/maven/maven-3/3.9.15/binaries/apache-maven-3.9.15-bin.tar.gz > /dev/null 2>&1
+wget https://dlcdn.apache.org/maven/maven-3/3.9.15/binaries/apache-maven-3.9.15-bin.tar.gz > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
     echo
