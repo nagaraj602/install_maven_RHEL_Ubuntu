@@ -2,6 +2,8 @@
 
 distro=$(cat /etc/os-release | grep "^ID=" | cut -d "=" -f2 | sed 's/"//g')
 
+MAVEN_VERSION="3.9.15"
+
 echo
 echo
 echo
@@ -11,32 +13,37 @@ if [ "$distro" == "rhel" ]; then
 
     sudo yum update -y > /dev/null 2>&1
     sudo yum upgrade -y > /dev/null 2>&1
-    sudo yum install wget -y > /dev/null 2>&1
+    sudo yum install wget tar -y > /dev/null 2>&1
     sudo dnf install java-25-openjdk-devel -y > /dev/null 2>&1
 
 elif [ "$distro" == "ubuntu" ]; then
 
     sudo apt-get update -y > /dev/null 2>&1
     sudo apt-get upgrade -y > /dev/null 2>&1
-    sudo apt-get install openjdk-25-jdk -y > /dev/null 2>&1
+    sudo apt-get install wget tar openjdk-25-jdk -y > /dev/null 2>&1
+
+elif [ "$distro" == "amzn" ]; then
+
+    if command -v dnf > /dev/null 2>&1; then
+        sudo dnf update -y > /dev/null 2>&1
+        sudo dnf install wget tar java-25-amazon-corretto-devel -y > /dev/null 2>&1
+    else
+        sudo yum update -y > /dev/null 2>&1
+        sudo yum install wget tar java-25-amazon-corretto-devel -y > /dev/null 2>&1
+    fi
 
 else
-    echo "Unsupported Distribution - Only RHEL and Ubuntu are supported by this Script!!!!"
+    echo "Unsupported Distribution - Only RHEL, Ubuntu and Amazon Linux are supported by this Script!!!!"
     exit 1
 fi
 
-# Dynamically detect JAVA_HOME
 JAVA_HOME_PATH=$(dirname $(dirname $(readlink -f $(which javac))))
 
-
-# Remove old Maven if exists
 sudo rm -rf /opt/apache-maven-* /opt/maven /usr/local/bin/mvn > /dev/null 2>&1
-
 
 cd /tmp
 
-#Get the updated link of maven from Apache website. If the link is outdated, then you will see installation error
-wget https://dlcdn.apache.org/maven/maven-3/3.9.15/binaries/apache-maven-3.9.15-bin.tar.gz > /dev/null 2>&1
+wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
     echo
@@ -45,13 +52,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+sudo tar xf apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt > /dev/null 2>&1
 
-
-sudo tar xf apache-maven-3.9.15-bin.tar.gz -C /opt
-sudo ln -s /opt/apache-maven-3.9.15 /opt/maven
-sudo ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
-
-
+sudo ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven > /dev/null 2>&1
+sudo ln -s /opt/maven/bin/mvn /usr/local/bin/mvn > /dev/null 2>&1
 
 sudo tee /etc/profile.d/maven.sh > /dev/null <<EOF
 export JAVA_HOME=$JAVA_HOME_PATH
@@ -60,11 +64,10 @@ export MAVEN_HOME=/opt/maven
 export PATH=\${M2_HOME}/bin:\${PATH}
 EOF
 
-sudo chmod +x /etc/profile.d/maven.sh
-source /etc/profile.d/maven.sh
+sudo chmod +x /etc/profile.d/maven.sh > /dev/null 2>&1
 
+source /etc/profile.d/maven.sh
 
 echo
 echo "Apache Maven 3.9.15 installed successfully on $distro"
 echo
-
