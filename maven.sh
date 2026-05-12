@@ -69,5 +69,5 @@ sudo chmod +x /etc/profile.d/maven.sh > /dev/null 2>&1
 source /etc/profile.d/maven.sh
 
 echo
-echo "Apache Maven 3.9.15 installed successfully on $distro"
+echo "Apache Maven ${MAVEN_VERSION} installed successfully on $distro"
 echo
