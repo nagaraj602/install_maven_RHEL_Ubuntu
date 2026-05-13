@@ -9,28 +9,19 @@ echo
 echo
 echo "Installing Maven on $distro"
 
-if [ "$distro" == "rhel" ]; then
+if [ "$distro" == "rhel" ] || [ "$distro" == "amzn" ]; then
 
     sudo yum update -y > /dev/null 2>&1
     sudo yum upgrade -y > /dev/null 2>&1
     sudo yum install wget tar -y > /dev/null 2>&1
     sudo dnf install java-25-openjdk-devel -y > /dev/null 2>&1
+    sudo yum install java-25-amazon-corretto -y > /dev/null 2>&1
 
 elif [ "$distro" == "ubuntu" ]; then
 
     sudo apt-get update -y > /dev/null 2>&1
     sudo apt-get upgrade -y > /dev/null 2>&1
     sudo apt-get install wget tar openjdk-25-jdk -y > /dev/null 2>&1
-
-elif [ "$distro" == "amzn" ]; then
-
-    if command -v dnf > /dev/null 2>&1; then
-        sudo dnf update -y > /dev/null 2>&1
-        sudo dnf install wget tar java-25-amazon-corretto-devel -y > /dev/null 2>&1
-    else
-        sudo yum update -y > /dev/null 2>&1
-        sudo yum install wget tar java-25-amazon-corretto-devel -y > /dev/null 2>&1
-    fi
 
 else
     echo "Unsupported Distribution - Only RHEL, Ubuntu and Amazon Linux are supported by this Script!!!!"
